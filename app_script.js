@@ -1,9 +1,5 @@
 // Form 0
 
-/*
-each year when year, copy data into first page into col (2023 - 2019 or etc.) and delete data on variable page
-*/
-
 const FOLDERNAME = "chula";
 const SHEETID = "1WWH240paa2RFUAgr_d_dfljRs7vVeDwf3pOlyPGs9gc";
 
@@ -38,19 +34,8 @@ function accessFormGoogleSheet(sheetID=SHEETID) {
   return sheet;
 }
 
-function accessFinGoogleSheet(sheetID=SHEETID) {
-  var sheetActive = SpreadsheetApp.openById(sheetID);
-  var sheet = sheetActive.getSheetByName(sheetID);
 
-  if (!sheet) {
-    Logger.log('Sheet not found: ' + sheetID);
-    return sheet;
-  }
-
-  Logger.log("Sheet found: " + sheetID);
-
-  return sheet;
-}
+const DEL = ["D10:O10", "D11:O11"]
 
 function deleteStuffMan() {
 
@@ -58,19 +43,14 @@ function deleteStuffMan() {
   var data = sheet.getDataRange().getValues();
   var numRows = data.length;
   
-  // Loop through the rows in reverse order to avoid issues with shifting row indexes
-  for (var i = numRows - 1; i >= 0; i--) {
-    var valueInColumnA = data[i][0]; // Assuming you want to check column A for deletion
-    
-    if (valueInColumnA === "Delete") {
-      sheet.deleteRow(i + 1); // Add 1 because row indexes are 1-based
-    }
+  // Define the row and column numbers you want to delete
+  for (let i = 0; i < DEL.length; i++) {
+    var rangeToClear = sheet.getRange(DEL[i]);
+      rangeToClear.clearContent();
+
   }
-  
-  // Delete columns B and C
-  sheet.deleteColumns(2, 2); // Delete 2 columns starting from column 2 (B)
 
-
+  // Clear the contents of the specified range
 }
 
 function main() {
