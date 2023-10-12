@@ -21,7 +21,7 @@ function ListFilesInFolder(folderName=FOLDERNAME) {
   Logger.log('Files in ' + folderName + ':\n' + JSON.stringify(fileDetailsArray));
 }
 
-function accessFormGoogleSheet(sheetID=SHEETID) {
+function accessFormGoogleSheet(sheetName, sheetID=SHEETID) {
   var sheetActive = SpreadsheetApp.openById(sheetID);
   var sheet = sheetActive.getSheetByName(sheetName);
 
@@ -41,15 +41,17 @@ function deleteStuffMan() {
   var sheet2 = accessFormGoogleSheet("ข้อไหล่ติดระดับ2");
 
   if (sheet1 && sheet2) {
-    var sheetsToDelete = [sheet1,sheet2];
+    var sheetsToDelete = [sheet1, sheet2];
 
     for (let i = 0; i < sheetsToDelete.length; i++) {
       for (let j = 0; j < DEL.length; j++) {
         var rangeToClear = sheetsToDelete[i].getRange(DEL[j]);
         rangeToClear.clearContent();
+        Logger.log('Clearing content in range ' + DEL[j] + ' of sheet ' + sheetsToDelete[i].getName());
+        rangeToClear.clearContent();
+      }
+    }
   }
-
-  // Clear the contents of the specified range
 }
 
 function main() {
@@ -61,4 +63,3 @@ function main() {
 
   deleteStuffMan();
 }
-// @ts-ignore
