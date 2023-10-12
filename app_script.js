@@ -1,7 +1,7 @@
 // Form 0
 
 const FOLDERNAME = "chula";
-const SHEETID = "1WWH240paa2RFUAgr_d_dfljRs7vVeDwf3pOlyPGs9gc";
+const SHEETID = "1U-5ZjZ9iRSCkML6dsp7NkWvpN5omfEi4KSguQKwTKtI";
 
 function ListFilesInFolder(folderName=FOLDERNAME) {
   var folder = DriveApp.getFoldersByName(folderName).next();
@@ -23,31 +23,30 @@ function ListFilesInFolder(folderName=FOLDERNAME) {
 
 function accessFormGoogleSheet(sheetID=SHEETID) {
   var sheetActive = SpreadsheetApp.openById(sheetID);
-  var sheet = sheetActive.getSheetByName("Summation of Year");
+  var sheet = sheetActive.getSheetByName(sheetName);
 
   if (!sheet) {
     Logger.log('Sheet not found: ' + sheetID);
-    return sheet;
+    return null;
   }
 
   Logger.log("Sheet found: " + sheetID);
   return sheet;
 }
 
-
 const DEL = ["D10:O10", "D11:O11"]
 
 function deleteStuffMan() {
+  var sheet1 = accessFormGoogleSheet("ข้อไหล่ติดระดับ1");
+  var sheet2 = accessFormGoogleSheet("ข้อไหล่ติดระดับ2");
 
-  var sheet = accessFormGoogleSheet();
-  var data = sheet.getDataRange().getValues();
-  var numRows = data.length;
-  
-  // Define the row and column numbers you want to delete
-  for (let i = 0; i < DEL.length; i++) {
-    var rangeToClear = sheet.getRange(DEL[i]);
-      rangeToClear.clearContent();
+  if (sheet1 && sheet2) {
+    var sheetsToDelete = [sheet1,sheet2];
 
+    for (let i = 0; i < sheetsToDelete.length; i++) {
+      for (let j = 0; j < DEL.length; j++) {
+        var rangeToClear = sheetsToDelete[i].getRange(DEL[j]);
+        rangeToClear.clearContent();
   }
 
   // Clear the contents of the specified range
@@ -62,3 +61,4 @@ function main() {
 
   deleteStuffMan();
 }
+// @ts-ignore
